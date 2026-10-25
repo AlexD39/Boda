@@ -1,0 +1,14 @@
+.git
+.gitignore
+.next
+dist
+node_modules
+.env*
+.openai
+.sites-runtime
+.wrangler
+site-source
+outputs
+work
+npm-debug.log*
+README-VERCEL.md

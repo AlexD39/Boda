@@ -1,4 +1,4 @@
-import { adminPinIsValid, hasDatabase, supabaseRequest } from "../../../lib/supabase-admin";
+import { adminPinIsValid, hasDatabase, query } from "../../../lib/db";
 
 export const runtime = "nodejs";
 
@@ -18,8 +18,8 @@ const defaults = {
 export async function GET() {
   if (!hasDatabase()) return Response.json({ config: defaults, demo: true });
   try {
-    const rows = await supabaseRequest<Array<{ config: Config }>>("invitations?id=eq.main&select=config&limit=1");
-    return Response.json({ config: rows[0]?.config || defaults });
+    const result = await query<{ config: Config }>("select config from invitations where id = $1 limit 1", ["main"]);
+    return Response.json({ config: result.rows[0]?.config || defaults });
   } catch {
     return Response.json({ config: defaults, demo: true });
   }
@@ -33,10 +33,11 @@ export async function POST(request: Request) {
   try {
     const payload = await request.json() as Partial<Config>;
     const config = { ...defaults, ...payload };
-    await supabaseRequest("invitations?on_conflict=id", {
-      method: "POST", headers: { Prefer: "resolution=merge-duplicates,return=minimal" },
-      body: JSON.stringify({ id: "main", config, updated_at: new Date().toISOString() }),
-    });
+    await query(
+      `insert into invitations (id, config, updated_at) values ($1, $2::jsonb, now())
+       on conflict (id) do update set config = excluded.config, updated_at = now()`,
+      ["main", JSON.stringify(config)],
+    );
     return Response.json({ config });
   } catch (error) {
     return Response.json({ error: error instanceof Error ? error.message : "No fue posible guardar" }, { status: 500 });

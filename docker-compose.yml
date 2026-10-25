@@ -1,0 +1,22 @@
+services:
+  database:
+    image: postgres:16-alpine
+    container_name: boda-postgres
+    environment:
+      POSTGRES_DB: boda
+      POSTGRES_USER: boda
+      POSTGRES_PASSWORD: boda_dev_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - boda_postgres_data:/var/lib/postgresql/data
+      - ./database/init.sql:/docker-entrypoint-initdb.d/001-init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U boda -d boda"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+    restart: unless-stopped
+
+volumes:
+  boda_postgres_data:

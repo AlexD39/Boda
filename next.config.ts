@@ -1,7 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  // Produces the minimal Node.js bundle used by the Docker runtime image.
+  output: "standalone",
 };
 
 export default nextConfig;

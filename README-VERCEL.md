@@ -1,29 +1,34 @@
 # Invitación de boda — despliegue en Vercel
 
-## 1. Base de datos gratuita
+## Arquitectura
 
-1. Crea un proyecto en Supabase.
-2. Abre **SQL Editor**, pega el contenido de `supabase/schema.sql` y ejecútalo.
-3. En **Project Settings > API**, copia la URL del proyecto y la clave `service_role`.
+- Next.js/React sirve el frontend.
+- Las rutas `/api/config` y `/api/rsvp` son el backend Node.js.
+- PostgreSQL almacena la configuración y las confirmaciones.
+- Docker se utiliza únicamente para PostgreSQL en desarrollo local.
 
-## 2. Variables de entorno
+## Desarrollo local
 
-Copia `.env.example` como `.env.local` para desarrollo. En Vercel agrega:
+```bash
+docker compose up -d
+copy .env.example .env.local
+npm install
+npm run dev
+```
 
-- `SUPABASE_URL`
-- `SUPABASE_SERVICE_ROLE_KEY`
-- `ADMIN_PIN`
+La invitación estará en `http://localhost:3000` y el panel privado en `http://localhost:3000/admin`.
 
-La clave `service_role` solo se utiliza dentro de las rutas del servidor y nunca se envía al navegador.
+## Base de producción
 
-## 3. Despliegue
+Crea una base PostgreSQL administrada y ejecuta `database/init.sql`. Puedes usar Supabase, Neon u otro proveedor compatible. Copia su cadena de conexión completa.
 
-Sube el proyecto a GitHub, impórtalo en Vercel y deja que detecte Next.js. El comando de compilación es `npm run build`.
+## Variables de Vercel
 
-## Personalización por invitado
+- `DATABASE_URL`: cadena de conexión PostgreSQL.
+- `ADMIN_PIN`: NIP privado para el panel de los novios.
 
-El panel de novios genera enlaces con estos parámetros:
+Importa el repositorio en Vercel. El framework y el comando `npm run build` se detectan automáticamente.
 
-`/?invitado=Familia%20Luna&pases=3&codigo=luna-3`
+## Invitaciones individuales
 
-Cada invitado puede descargar desde la página un PDF personalizado cuyo botón abre ese mismo enlace.
+Desde `/admin`, los novios indican el nombre, los pases y un código. Después pueden copiar el enlace o descargar un PDF personalizado. La invitación pública no muestra estas herramientas.
