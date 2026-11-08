@@ -51,7 +51,7 @@ export async function downloadInvitationPdf(config: PdfConfig, guest: string, se
   doc.text(guest, width / 2, 76, { align: "center", maxWidth: 64 });
   doc.setFont("helvetica", "normal");
   doc.setFontSize(8);
-  const date = new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "long", year: "numeric" }).format(new Date(config.date));
+  const date = new Intl.DateTimeFormat("es-MX", { day: "numeric", month: "long", year: "numeric", timeZone: "America/Mexico_City" }).format(new Date(config.date));
   doc.text(date, width / 2, 90, { align: "center" });
   doc.setFontSize(7);
   doc.text(config.venue, width / 2, 98, { align: "center", maxWidth: 62 });
