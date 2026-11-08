@@ -23,16 +23,16 @@ export async function downloadInvitationPdf(config: PdfConfig, guest: string, se
   const doc = new jsPDF({ orientation: "portrait", unit: "mm", format: "a5" });
   const width = 148;
   const height = 210;
-  const florals = await imageAsDataUrl("/assets/wedding-florals.png");
+  const florals = await imageAsDataUrl("/assets/wedding-florals-sage.png");
 
   doc.addImage(florals, "PNG", 0, 0, width, height);
   doc.setFillColor(255, 253, 248);
   doc.roundedRect(14, 16, 120, 178, 3, 3, "F");
-  doc.setDrawColor(185, 154, 91);
+  doc.setDrawColor(143, 152, 119);
   doc.setLineWidth(0.35);
   doc.roundedRect(18, 20, 112, 170, 2, 2, "S");
 
-  doc.setTextColor(20, 42, 70);
+  doc.setTextColor(52, 58, 43);
   doc.setFont("times", "italic");
   doc.setFontSize(24);
   doc.text(`${config.partner1} & ${config.partner2}`, width / 2, 43, { align: "center" });
@@ -44,7 +44,7 @@ export async function downloadInvitationPdf(config: PdfConfig, guest: string, se
 
   // Tarjeta que asoma del sobre.
   doc.setFillColor(255, 255, 255);
-  doc.setDrawColor(192, 201, 213);
+  doc.setDrawColor(207, 213, 199);
   doc.roundedRect(35, 55, 78, 65, 2, 2, "FD");
   doc.setFont("times", "italic");
   doc.setFontSize(15);
@@ -56,27 +56,27 @@ export async function downloadInvitationPdf(config: PdfConfig, guest: string, se
   doc.setFontSize(7);
   doc.text(config.venue, width / 2, 98, { align: "center", maxWidth: 62 });
 
-  // Sobre azul, pliegues y sello dorado.
-  doc.setFillColor(28, 62, 112);
-  doc.setDrawColor(20, 47, 86);
+  // Sobre verde salvia, pliegues y sello champagne.
+  doc.setFillColor(105, 114, 83);
+  doc.setDrawColor(75, 83, 60);
   doc.roundedRect(25, 105, 98, 52, 2, 2, "FD");
-  doc.setFillColor(40, 78, 132);
+  doc.setFillColor(123, 132, 101);
   doc.triangle(25, 105, 123, 105, 74, 140, "F");
-  doc.setDrawColor(102, 139, 187);
+  doc.setDrawColor(170, 178, 154);
   doc.line(25, 157, 65, 127);
   doc.line(123, 157, 83, 127);
-  doc.setFillColor(185, 154, 91);
+  doc.setFillColor(167, 154, 104);
   doc.circle(74, 137, 7, "F");
   doc.setTextColor(255, 253, 248);
   doc.setFont("times", "italic");
   doc.setFontSize(9);
   doc.text(`${config.partner1.charAt(0)}&${config.partner2.charAt(0)}`, 74, 139.5, { align: "center" });
 
-  doc.setTextColor(20, 42, 70);
+  doc.setTextColor(52, 58, 43);
   doc.setFont("times", "italic");
   doc.setFontSize(13);
   doc.text(`${seats} ${seats === 1 ? "lugar reservado" : "lugares reservados"} para ti`, width / 2, 170, { align: "center" });
-  doc.setFillColor(20, 62, 112);
+  doc.setFillColor(105, 114, 83);
   doc.roundedRect(39, 177, 70, 10, 5, 5, "F");
   doc.setTextColor(255, 255, 255);
   doc.setFont("helvetica", "bold");

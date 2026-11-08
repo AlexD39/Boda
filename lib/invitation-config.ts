@@ -31,10 +31,16 @@ export const defaultInvitationConfig: InvitationConfig = {
   whatsapp: "525500000000",
   audioUrl: "",
   galleryImages: [
-    { url: "/assets/rings.png", caption: "Amor en cada detalle" },
-    { url: "/assets/bouquet.png", caption: "El comienzo de nuestra historia" },
-    { url: "/assets/wedding-florals.png", caption: "Donde sea, pero contigo" },
+    { url: "/assets/rings-sage.png", caption: "Amor en cada detalle" },
+    { url: "/assets/bouquet-sage.png", caption: "El comienzo de nuestra historia" },
+    { url: "/assets/wedding-florals-sage.png", caption: "Donde sea, pero contigo" },
   ],
+};
+
+const upgradedGalleryAssets: Record<string, string> = {
+  "/assets/rings.png": "/assets/rings-sage.png",
+  "/assets/bouquet.png": "/assets/bouquet-sage.png",
+  "/assets/wedding-florals.png": "/assets/wedding-florals-sage.png",
 };
 
 export function normalizeInvitationConfig(value?: Partial<InvitationConfig> | null): InvitationConfig {
@@ -42,7 +48,10 @@ export function normalizeInvitationConfig(value?: Partial<InvitationConfig> | nu
   return {
     ...merged,
     galleryImages: Array.isArray(value?.galleryImages) && value.galleryImages.length
-      ? value.galleryImages.filter((image) => image?.url).slice(0, 10).map((image) => ({ url: String(image.url), caption: String(image.caption || "") }))
+      ? value.galleryImages.filter((image) => image?.url).slice(0, 10).map((image) => {
+          const url = String(image.url);
+          return { url: upgradedGalleryAssets[url] || url, caption: String(image.caption || "") };
+        })
       : defaultInvitationConfig.galleryImages,
   };
 }
