@@ -1,3 +1,5 @@
+import { getAddressWithoutMapsUrl, getEmbeddedMapsUrl } from "./location-links";
+
 export type GalleryImage = {
   url: string;
   caption: string;
@@ -49,8 +51,11 @@ const upgradedGalleryAssets: Record<string, string> = {
 
 export function normalizeInvitationConfig(value?: Partial<InvitationConfig> | null): InvitationConfig {
   const merged = { ...defaultInvitationConfig, ...(value || {}) };
+  const embeddedMapsUrl = getEmbeddedMapsUrl(String(merged.address || ""));
   return {
     ...merged,
+    address: getAddressWithoutMapsUrl(String(merged.address || "")),
+    mapsUrl: String(merged.mapsUrl || "").trim() || embeddedMapsUrl,
     galleryImages: Array.isArray(value?.galleryImages) && value.galleryImages.length
       ? value.galleryImages.filter((image) => image?.url).slice(0, 10).map((image) => {
           const url = String(image.url);
