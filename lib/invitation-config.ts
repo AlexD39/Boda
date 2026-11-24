@@ -9,6 +9,8 @@ export type InvitationConfig = {
   date: string;
   venue: string;
   address: string;
+  venueWebsiteUrl: string;
+  mapsUrl: string;
   story: string;
   dressCode: string;
   giftTitle: string;
@@ -19,11 +21,13 @@ export type InvitationConfig = {
 };
 
 export const defaultInvitationConfig: InvitationConfig = {
-  partner1: "Isabella",
-  partner2: "Santiago",
+  partner1: "Leonardo",
+  partner2: "Iveet",
   date: "2027-05-22T17:00:00-06:00",
   venue: "Hacienda San Gabriel",
   address: "Camino de los Olivos 18, Querétaro, Qro.",
+  venueWebsiteUrl: "",
+  mapsUrl: "",
   story: "Después de tantos caminos compartidos, elegimos uno para siempre. Queremos celebrar este nuevo capítulo rodeados de las personas que más amamos.",
   dressCode: "Formal · tonos claros y azules bienvenidos",
   giftTitle: "Lo más importante es celebrar juntos",

@@ -1,12 +1,16 @@
 "use client";
 
 import { jsPDF } from "jspdf";
+import { getMapsUrl, getVenueWebsiteUrl } from "./location-links";
 
 type PdfConfig = {
   partner1: string;
   partner2: string;
   date: string;
   venue: string;
+  address: string;
+  venueWebsiteUrl: string;
+  mapsUrl: string;
 };
 
 async function imageAsDataUrl(path: string) {
@@ -24,6 +28,8 @@ export async function downloadInvitationPdf(config: PdfConfig, guest: string, se
   const width = 148;
   const height = 210;
   const florals = await imageAsDataUrl("/assets/wedding-florals-sage.png");
+  const mapsUrl = getMapsUrl(config);
+  const venueWebsiteUrl = getVenueWebsiteUrl(config);
 
   doc.addImage(florals, "PNG", 0, 0, width, height);
   doc.setFillColor(255, 253, 248);
@@ -55,6 +61,11 @@ export async function downloadInvitationPdf(config: PdfConfig, guest: string, se
   doc.text(date, width / 2, 90, { align: "center" });
   doc.setFontSize(7);
   doc.text(config.venue, width / 2, 98, { align: "center", maxWidth: 62 });
+  if (venueWebsiteUrl) doc.link(42, 93, 64, 7, { url: venueWebsiteUrl });
+  doc.setFontSize(6.5);
+  doc.setTextColor(91, 99, 78);
+  doc.text(config.address, width / 2, 104, { align: "center", maxWidth: 66 });
+  doc.link(40, 100, 68, 9, { url: mapsUrl });
 
   // Sobre verde salvia, pliegues y sello champagne.
   doc.setFillColor(105, 114, 83);
